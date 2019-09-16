@@ -6,6 +6,7 @@ The app's name is `dash-exim.py`
 
 To run, please ensure that you have `pandas`, `numpy`, `plotly`, and `dash` installed.
 Please refer to the respective pages in order to install them.
+For CSS and layout, I have used Bulma (https://bulma.io/)
 
 As it's not in the production system, please clone the repo after installing packages and then run the app with the command
 
