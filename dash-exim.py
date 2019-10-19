@@ -1,4 +1,4 @@
-#the dash app for import export
+# the dash app for import export
 
 import pandas as pd
 import numpy as np
@@ -22,63 +22,129 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.title = 'Import Export Dash'
 
-app.layout = html.Div([
-    html.H1(
-        'Import and Exports of India from 2010 to 2018',
-        className="title has-text-centered"),  # class for title
-    html.Div([  # container division for main content
-        html.Div([  # left division
-            html.P(
-                story,
-                className="subtitle"  # class for para in left division
-            ),
-            dcc.Graph(
-                id="total-exim",
-                figure={
-                    'data': [{
-                        'x': [i for i in np.unique(ex.year)],
-                        'y': im.groupby('year').agg(np.sum).value,
-                        'type': 'bar',
-                        'name': 'Imports'
-                    },
-                        {
-                        'x': [i for i in np.unique(ex.year)],
-                        'y': ex.groupby('year').agg(np.sum).value,
-                        'type': 'bar',
-                        'name': 'Exports'
-                    }
-                    ],
-                    'layout': {
-                        'title': 'Imports and Exports of India from 2010 to 2018',
-                        'xaxis': {
-                            'title': 'Countries'
-                        },
-                        'yaxis': {
-                            'title': 'Million INR'
-                        }
-                    }
-                }
-            )
-        ],
-            className="column"),  # class for left division
-        html.Div([  # right division
-            dcc.Dropdown(
-                id='yearInput',
-                options=[{'label': i, 'value': i} for i in np.unique(ex.year)],
-                value=2018
-            ),
-            dcc.Graph(
-                id='outputGraphImport'
-            ),
-            dcc.Graph(
-                id='outputGraphExport'
-            )
-        ],
-            className="column")  # class for right division
-    ],
-        className="container columns")  # class for container
-],
-    className="container")  # class for outermost division
+app.layout = html.Section([
+    html.Div([
+        html.Div([
+            html.H1('Import and Exports of India', className="columns title"),
+            html.Div([
+                html.Div([
+                    html.Div([
+                        html.P(
+                            story,
+                            className="subtitle"  # class for para in left division
+                        )], className="columns"),
+                    html.Div([
+                        dcc.Graph(
+                            id="total-exim",
+                            figure={
+                                'data': [{
+                                    'x': [i for i in np.unique(ex.year)],
+                                    'y': im.groupby('year').agg(np.sum).value,
+                                    'type': 'bar',
+                                    'name': 'Imports'
+                                },
+                                    {
+                                    'x': [i for i in np.unique(ex.year)],
+                                    'y': ex.groupby('year').agg(np.sum).value,
+                                    'type': 'bar',
+                                    'name': 'Exports'
+                                }
+                                ],
+                                'layout': {
+                                    'title': 'Imports and Exports of India from 2010 to 2018',
+                                    'xaxis': {
+                                        'title': 'Countries'
+                                    },
+                                    'yaxis': {
+                                        'title': 'Million INR'
+                                    }
+                                }
+                            }
+                        )
+                    ], className="columns"),
+                ], className="column"),
+                html.Div([
+                    html.Div([
+                        dcc.Dropdown(
+                            id='yearInput',
+                            options=[{'label': i, 'value': i}
+                                     for i in np.unique(ex.year)],
+                            value=2018
+                        ),
+                    ], className="columns"),
+                    html.Div([
+                        dcc.Graph(
+                            id='outputGraphImport'
+                        ),
+                    ], className="columns"),
+                    html.Div([
+                        dcc.Graph(
+                            id='outputGraphExport'
+                        )
+                    ], className="columns")
+                ], className="column"),
+            ], className="columns")
+        ], className="container has-text-centered")
+    ], className="hero-body")
+], className="hero is-fullheight")
+
+# app.layout = html.Div([
+#     html.H1(
+#         'Import and Exports of India from 2010 to 2018',
+#         className="title has-text-centered"),  # class for title
+#     html.Div([  # container division for main content
+#         html.Div([  # left division
+#             html.P(
+#                 story,
+#                 className="subtitle"  # class for para in left division
+#             ),
+#             dcc.Graph(
+#                 id="total-exim",
+#                 figure={
+#                     'data': [{
+#                         'x': [i for i in np.unique(ex.year)],
+#                         'y': im.groupby('year').agg(np.sum).value,
+#                         'type': 'bar',
+#                         'name': 'Imports'
+#                     },
+#                         {
+#                         'x': [i for i in np.unique(ex.year)],
+#                         'y': ex.groupby('year').agg(np.sum).value,
+#                         'type': 'bar',
+#                         'name': 'Exports'
+#                     }
+#                     ],
+#                     'layout': {
+#                         'title': 'Imports and Exports of India from 2010 to 2018',
+#                         'xaxis': {
+#                             'title': 'Countries'
+#                         },
+#                         'yaxis': {
+#                             'title': 'Million INR'
+#                         }
+#                     }
+#                 }
+#             )
+#         ],
+#             className="column"),  # class for left division
+#         html.Div([  # right division
+#             dcc.Dropdown(
+#                 id='yearInput',
+#                 options=[{'label': i, 'value': i} for i in np.unique(ex.year)],
+#                 value=2018
+#             ),
+#             dcc.Graph(
+#                 id='outputGraphImport'
+#             ),
+#             dcc.Graph(
+#                 id='outputGraphExport'
+#             )
+#         ],
+#             className="column")  # class for right division
+#     ],
+#         className="container columns")  # class for container
+# ],
+#     className="container")  # class for outermost division
 
 
 @app.callback(
