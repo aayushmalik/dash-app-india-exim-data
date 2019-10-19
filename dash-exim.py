@@ -13,7 +13,18 @@ import plotly.graph_objects as go
 ex = pd.read_csv('2018-2010_export.csv')
 im = pd.read_csv('2018-2010_import.csv')
 
-story = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet elit at urna varius, non sagittis augue porttitor. Vestibulum felis mauris, dignissim ac convallis ac, dapibus nec neque. Ut convallis metus vel ipsum consectetur scelerisque. Sed elementum eget nunc a maximus. Vestibulum accumsan lorem eros, vitae placerat mi consectetur nec. Morbi tortor eros, lobortis nec dolor a, aliquet interdum ex. In erat felis, placerat iaculis pellentesque nec, bibendum dictum ex. Etiam vitae ipsum vestibulum lectus viverra vulputate. Nulla nisi risus, iaculis a tortor sit amet, hendrerit volutpat nisi. Aenean tempor pretium nisl, vitae mattis ipsum facilisis quis. Ut ultricies, dolor at viverra pharetra, mauris purus gravida urna, id faucibus felis est eget massa. Nam viverra nibh et metus ultricies tempus. Donec quis enim vel tortor consectetur fermentum. Phasellus maximus enim nec posuere venenatis. Curabitur ac tincidunt erat, et porta enim. Sed pulvinar blandit dolor et vulputate. Cras tristique diam dui, in pulvinar turpis convallis nec. Vivamus egestas mattis tellus sed lacinia."
+story = '''India exports approximately 7500 commodities to about 190 countries, and imports around 6000 
+commodities from 140 countries. India exported US$318.2 billion and imported $462.9 billion 
+worth of commodities in 2014. The Government of India's Economic Survey 2017-18 noted that 
+five states — Maharashtra, Gujarat, Karnataka, Tamil Nadu and Telangana — accounted for 
+70% of India's total exports. It was the first time that the survey included international 
+export data for states. The survey found a high correlation between a state's 
+Gross State Domestic Product (GSDP) per capita and its share of total exports. 
+With a high GSDP per capita but low export share, Kerala was the only major outlier 
+because the state's GSDP per capita was heavily influenced by remittances. 
+The survey also found that the largest firms in India contributed to a smaller 
+percentage of exports when compared to countries like Brazil, Germany, Mexico, and the United States. 
+The top 1% of India's companies accounted for 38% of total exports.'''
 
 external_stylesheets = [
     'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css']
@@ -23,18 +34,12 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'Import Export Dash'
 
 app.layout = html.Section([
+    html.P('Import and Export Visualization',
+    className = "title has-text-centered"),
     html.Div([
+        html.Div(story, className = "subtitle has-text-justified column"),
         html.Div([
-            html.H1('Import and Exports of India', className="columns title"),
-            html.Div([
-                html.Div([
-                    html.Div([
-                        html.P(
-                            story,
-                            className="subtitle"  # class for para in left division
-                        )], className="columns"),
-                    html.Div([
-                        dcc.Graph(
+            dcc.Graph(
                             id="total-exim",
                             figure={
                                 'data': [{
@@ -61,91 +66,35 @@ app.layout = html.Section([
                                 }
                             }
                         )
-                    ], className="columns"),
-                ], className="column"),
-                html.Div([
-                    html.Div([
-                        dcc.Dropdown(
+        ], className = "column"),
+    ],
+    className = "columns"),
+    html.Div([
+        html.Div([
+            dcc.Dropdown(
                             id='yearInput',
                             options=[{'label': i, 'value': i}
                                      for i in np.unique(ex.year)],
                             value=2018
-                        ),
-                    ], className="columns"),
-                    html.Div([
+                        )
+        ],
+        className = "column is-one-third")
+    ], className = "columns is-centered" ),
+    html.Div([
+        html.Div([
                         dcc.Graph(
                             id='outputGraphImport'
                         ),
-                    ], className="columns"),
+                    ], className="column"),
                     html.Div([
                         dcc.Graph(
                             id='outputGraphExport'
                         )
-                    ], className="columns")
-                ], className="column"),
-            ], className="columns")
-        ], className="container has-text-centered")
-    ], className="hero-body")
-], className="hero is-fullheight")
-
-# app.layout = html.Div([
-#     html.H1(
-#         'Import and Exports of India from 2010 to 2018',
-#         className="title has-text-centered"),  # class for title
-#     html.Div([  # container division for main content
-#         html.Div([  # left division
-#             html.P(
-#                 story,
-#                 className="subtitle"  # class for para in left division
-#             ),
-#             dcc.Graph(
-#                 id="total-exim",
-#                 figure={
-#                     'data': [{
-#                         'x': [i for i in np.unique(ex.year)],
-#                         'y': im.groupby('year').agg(np.sum).value,
-#                         'type': 'bar',
-#                         'name': 'Imports'
-#                     },
-#                         {
-#                         'x': [i for i in np.unique(ex.year)],
-#                         'y': ex.groupby('year').agg(np.sum).value,
-#                         'type': 'bar',
-#                         'name': 'Exports'
-#                     }
-#                     ],
-#                     'layout': {
-#                         'title': 'Imports and Exports of India from 2010 to 2018',
-#                         'xaxis': {
-#                             'title': 'Countries'
-#                         },
-#                         'yaxis': {
-#                             'title': 'Million INR'
-#                         }
-#                     }
-#                 }
-#             )
-#         ],
-#             className="column"),  # class for left division
-#         html.Div([  # right division
-#             dcc.Dropdown(
-#                 id='yearInput',
-#                 options=[{'label': i, 'value': i} for i in np.unique(ex.year)],
-#                 value=2018
-#             ),
-#             dcc.Graph(
-#                 id='outputGraphImport'
-#             ),
-#             dcc.Graph(
-#                 id='outputGraphExport'
-#             )
-#         ],
-#             className="column")  # class for right division
-#     ],
-#         className="container columns")  # class for container
-# ],
-#     className="container")  # class for outermost division
-
+                    ], className="column")
+    ],
+    className = "columns")
+],
+className = "container")
 
 @app.callback(
     Output('outputGraphImport', 'figure'),
@@ -194,4 +143,4 @@ def ex_update_figure(yearInput):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)
